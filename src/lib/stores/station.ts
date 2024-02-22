@@ -1,0 +1,37 @@
+import type { StationInterface } from '$types/station';
+import { writable } from 'svelte/store';
+
+const initialStation: StationInterface = {
+	id: null,
+	name: null,
+	inventory: {
+		p1: {
+			id: 1,
+			name: null,
+			state: null,
+			rentTime: null
+		},
+		p2: {
+			id: 2,
+			name: null,
+			state: null,
+			rentTime: null
+		},
+		p3: {
+			id: 3,
+			name: null,
+			state: null,
+			rentTime: null
+		},
+		p4: {
+			id: 4,
+			name: null,
+			state: null,
+			rentTime: null
+		}
+	}
+};
+
+const stationStore = writable<StationInterface>(initialStation);
+
+export { stationStore };
