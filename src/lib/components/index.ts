@@ -17,6 +17,7 @@ export { default as OrderModal } from './core/Modal/Order.svelte';
 export { default as NotificationBasic } from './core/Notification/Basic.svelte';
 export { default as Text } from './core/Text/Text.svelte';
 export { default as ThemeToggle } from './core/Toggle/Theme.svelte';
+export { default as BackButtonLayout } from './layout/BackButton.svelte';
 export { default as BaseLayout } from './layout/Base.svelte';
 export { default as MobileLayout } from './layout/Mobile.svelte';
 export { default as MagicLogIn } from './molecules/MagicLogIn/index.svelte';

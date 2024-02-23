@@ -1,10 +1,10 @@
 import { cartStore } from '$lib/stores/orders';
 import { stationStore } from '$lib/stores/station';
-import type { InventoryInterface, ItemInterface, ItemState } from '$types/station';
+import type { InventoryInterface, ItemInterface } from '$types/station';
 import { get } from 'svelte/store';
 import { updateStationInventoryDb } from './firestoreUtils';
 
-export const addToCart = (i: ItemInterface, state: ItemState, total: number) => {
+export const addToCart = (i: ItemInterface) => {
 	const cs = get(cartStore);
 	const ss = get(stationStore);
 
@@ -25,13 +25,13 @@ export const addToCart = (i: ItemInterface, state: ItemState, total: number) => 
 			...ss.inventory,
 			[key]: {
 				...ss.inventory[key],
-				state: state
+				state: 'reserved'
 			}
 		} as InventoryInterface
 	};
 
 	cs.items = [...cs.items, i];
-	cs.total = total;
+	cs.total = (i.rentTime && cs.total + i.rentTime * ss.marketing.hourlyRate) as number;
 
 	stationStore.set(newStationStore);
 	cartStore.set(cs);
@@ -39,7 +39,7 @@ export const addToCart = (i: ItemInterface, state: ItemState, total: number) => 
 	updateStationInventoryDb(newStationStore.id as string, newStationStore.inventory);
 };
 
-export const removeFromCart = (i: ItemInterface, state: ItemState, total: number) => {
+export const removeFromCart = (i: ItemInterface) => {
 	const cs = get(cartStore);
 	const ss = get(stationStore);
 
@@ -60,12 +60,12 @@ export const removeFromCart = (i: ItemInterface, state: ItemState, total: number
 			...ss.inventory,
 			[key]: {
 				...ss.inventory[key],
-				state: state
+				state: 'available'
 			}
 		} as InventoryInterface
 	};
 
-	cs.total = total;
+	cs.total = (i.rentTime && cs.total - i.rentTime * ss.marketing.hourlyRate) as number;
 
 	stationStore.set(newStationStore);
 	cartStore.set(cs);

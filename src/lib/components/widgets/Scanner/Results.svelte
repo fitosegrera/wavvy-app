@@ -1,11 +1,9 @@
 <script lang="ts">
-	// import scanIcon from '../assets/scan.svg';
-
 	export let active: boolean;
 	export let decodedData: string;
 	export let onNewScan: () => void;
 
-	let data, regex;
+	let data, regex: RegExp;
 
 	$: if (active) {
 		const urlExp =

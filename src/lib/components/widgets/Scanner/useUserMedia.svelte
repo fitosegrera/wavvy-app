@@ -1,6 +1,11 @@
 <script lang="ts">
+	import { error, status, stream } from '$lib/stores/scanner';
+	import type {
+		UseUserMediaStatusType,
+		UseUserMediaStreamType,
+		UseUserMediaType
+	} from '$types/components';
 	import { onMount } from 'svelte';
-	import { error, status, stream } from './stores.js';
 
 	let mounted;
 
@@ -18,36 +23,29 @@
 		candidate: MediaStream | MediaSource | Blob | null
 	): candidate is MediaStream => candidate !== null && 'getTracks' in candidate;
 
-	type UseUserMediaStatusType = 'pending' | 'resolved' | 'rejected' | 'stopped';
-
-	interface UseUserMediaType {
-		stopMediaStream: () => void;
-		startMediaStream: () => void;
-	}
-
-	function setStatus(params: string) {
+	function setStatus(params: UseUserMediaStatusType) {
 		console.log(`Setting status ${params}`);
 
-		$status = params;
+		$status = params as UseUserMediaStatusType;
 	}
 
 	export const useUserMedia = (): UseUserMediaType => {
 		$stream = null;
 		$error = null;
-		$status = 'stopped';
+		$status = 'stopped' as UseUserMediaStatusType;
 
 		function setError(params: string) {
 			console.log('Setting erro');
 			$error = params;
 		}
 
-		function setStream(params: MediaStream) {
+		function setStream(params: UseUserMediaStreamType) {
 			console.log(`Setting stream`, { params });
-			$stream = params;
+			$stream = params as UseUserMediaStreamType;
 		}
 
 		const startMediaStream = (): void => {
-			setStatus('pending');
+			setStatus('pending' as UseUserMediaStatusType);
 
 			navigator.mediaDevices
 				.getUserMedia({
@@ -57,12 +55,12 @@
 					}
 				})
 				.then((userStream) => {
-					setStream(userStream);
-					setStatus('resolved');
+					setStream(userStream as UseUserMediaStreamType);
+					setStatus('resolved' as UseUserMediaStatusType);
 				})
 				.catch((err) => {
 					setError(err);
-					setStatus('rejected');
+					setStatus('rejected' as UseUserMediaStatusType);
 				});
 		};
 
@@ -76,12 +74,12 @@
 		if (isMediaStream($stream)) {
 			$stream.getTracks().forEach((track) => {
 				track.stop();
-				$stream.removeTrack(track);
+				if ($stream) $stream.removeTrack(track);
 			});
 
 			console.log({ streams: $stream });
 
-			setStatus('stopped');
+			setStatus('stopped' as UseUserMediaStatusType);
 		}
 	}
 </script>

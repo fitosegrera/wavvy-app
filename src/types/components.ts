@@ -33,3 +33,12 @@ export interface NotificationProps {
 	content: string;
 	type: NotificationStatusType;
 }
+
+export type UseUserMediaStatusType = 'pending' | 'resolved' | 'rejected' | 'stopped' | 'none';
+
+export type UseUserMediaStreamType = MediaStream | null;
+
+export interface UseUserMediaType {
+	stopMediaStream: () => void;
+	startMediaStream: () => void;
+}

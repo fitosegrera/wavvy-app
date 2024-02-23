@@ -166,7 +166,7 @@
 									intent="text"
 									disabled={item.state !== 'available' ? true : false}
 									onClick={() => {
-										addToCart(item, 'reserved', total);
+										addToCart(item);
 										handleReservations();
 										socket.createReservation(wavvySocket, item);
 										$notificationStore.open = true;
@@ -200,7 +200,7 @@
 									intent="text"
 									class="text-[20px]"
 									onClick={() => {
-										removeFromCart(item, 'available', total);
+										removeFromCart(item);
 										handleReservations();
 										socket.cancelReservation(wavvySocket, item);
 									}}>

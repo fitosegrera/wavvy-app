@@ -1,8 +1,20 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Icon from '@iconify/svelte';
 
+	export let href: string | null = null;
+	export let onBack: (() => void) | null = null;
+
 	function onClick() {
-		history.back();
+		if (href) {
+			goto(href);
+		} else {
+			history.back();
+		}
+
+		if (onBack) {
+			onBack();
+		}
 	}
 </script>
 

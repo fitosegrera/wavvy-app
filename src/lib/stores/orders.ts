@@ -1,14 +1,24 @@
 import { generateId } from '$lib/utils/generateId';
-import { writable } from 'svelte/store';
-
 import type { CartInterface, OrderInterface } from '$types/orders';
+import type { ItemInterface } from '$types/station';
+import { writable } from 'svelte/store';
 
 const cart: CartInterface = {
 	items: [],
 	total: 0
 };
 
-const orders: OrderInterface[] = [
+const selectedItem: ItemInterface = {
+	id: 0,
+	name: null,
+	rentTime: 1,
+	state: 'available',
+	reservation: {
+		user: ''
+	}
+};
+
+const pastOrders: OrderInterface[] = [
 	{
 		id: generateId(8),
 		user: {
@@ -44,8 +54,10 @@ const orders: OrderInterface[] = [
 	}
 ];
 
-const orderHistoryStore = writable(orders);
+const orderHistoryStore = writable(pastOrders);
 
 const cartStore = writable(cart);
 
-export { cartStore, orderHistoryStore };
+const selectedItemStore = writable(selectedItem);
+
+export { cartStore, orderHistoryStore, selectedItemStore };

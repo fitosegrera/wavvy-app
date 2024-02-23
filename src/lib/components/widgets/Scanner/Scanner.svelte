@@ -1,25 +1,33 @@
 <script lang="ts">
+	import { BackButton, FlexBox, Text } from '$lib/components';
+	import { user } from '$lib/stores/auth';
+	import { notificationStore } from '$lib/stores/notification';
+	import { cartStore } from '$lib/stores/orders';
+	import { error, result, status, stream } from '$lib/stores/scanner';
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { error, status, stream } from './stores';
 
 	import jsQR from 'jsqr';
 
-	import Results from './Results.svelte';
 	import ScannerBorders from './ScannerBorders.svelte';
 
+	import { goto } from '$app/navigation';
+	import { selectedItemStore } from '$lib/stores/orders';
+	import { stationStore } from '$lib/stores/station';
+	import { updateStationInventoryDb } from '$lib/utils/firestoreUtils';
+	import type { ItemInterface, ItemState } from '$types/station';
 	import UserMedia from './useUserMedia.svelte';
 
-	export let result = null; // : string
-	export let stopMediaStream = null;
-	let startMediaStream;
+	$result = null;
+	export let stopMediaStream: () => void | null = () => null;
+	let startMediaStream: () => void | null = () => null;
 
 	const dispatch = createEventDispatcher();
 
-	$: active = !result;
+	$: active = !$result;
 
-	let video: HTMLVideoElement = null;
-	let canvas: HTMLCanvasElement = null;
-	let useUserMedia;
+	let video: HTMLVideoElement | null = null;
+	let canvas: HTMLCanvasElement | null = null;
+	let useUserMedia: any;
 	let mounted;
 
 	onMount(() => {
@@ -28,9 +36,9 @@
 		({ stopMediaStream, startMediaStream } = useUserMedia());
 
 		return () => {
-			console.log('Component destroyed');
+			// console.log('Component destroyed');
 			stopMediaStream();
-			video.srcObject = null;
+			if (video) video.srcObject = null;
 		};
 	});
 
@@ -49,19 +57,32 @@
 		const qrCode = jsQR(imageData.data, width, height);
 
 		if (qrCode === null) {
-			console.log('timeout');
+			// console.log('timeout');
 			setTimeout(startCapturing, 750);
 		} else {
-			result = qrCode.data;
-			dispatch('successfulScan', qrCode.data);
+			$result = qrCode.data as string | null;
+			if (qrCode.data) {
+				const itemId = qrCode.data.split('%')[3] as string;
 
-			stopMediaStream();
-			video.srcObject = null;
+				const key = ('p' + itemId) as keyof typeof $stationStore.inventory;
+
+				$stationStore.inventory[key].state = 'reserved' as ItemState;
+				$stationStore.inventory[key].reservation.user = $user?.user?.uid! as string;
+
+				$selectedItemStore = $stationStore.inventory[key] as ItemInterface;
+
+				updateStationInventoryDb($stationStore.id as string, $stationStore.inventory);
+
+				dispatch('successfulScan', qrCode.data);
+
+				stopMediaStream();
+				video.srcObject = null;
+			}
 		}
 	};
 
 	const handleCanPlay = (): void => {
-		console.log('canplay');
+		// console.log('canplay');
 		if (canvas === null || canvas === null || video === null || video === null) {
 			return;
 		}
@@ -77,7 +98,7 @@
 	};
 
 	$: if ($status === 'resolved' && video !== null && $stream) {
-		console.log('Resolve, stream');
+		// console.log('Resolve, stream');
 		video.srcObject = $stream;
 		video.play().catch(console.error);
 	}
@@ -89,24 +110,40 @@
 
 <UserMedia bind:useUserMedia />
 
-<div class={`scanner ${active ? '' : 'scanner--hidden'}`}>
-	<div class="scanner__aspect-ratio-container">
-		<canvas bind:this={canvas} class="scanner__canvas" />
-		<!-- svelte-ignore a11y-media-has-caption -->
-		<video bind:this={video} on:canplay={handleCanPlay} class="scanner__video">
-			<!-- <track kind="captions" /> -->
-		</video>
-		<ScannerBorders />
-	</div>
-
-	<div class="scanner-tip">
-		<div>Scan a QR code with your camera to see what it says.</div>
-	</div>
-</div>
-
-<slot {result}>
-	<Results active={result !== null} decodedData={result} onNewScan={() => (result = null)} />
-</slot>
+<FlexBox intent="flexColTop" gap="large" class="w-full h-full">
+	<FlexBox intent="flexRowLeft" gap="small" class="w-full">
+		<BackButton href="/" />
+		<Text>Volver</Text>
+	</FlexBox>
+	{#if !$result}
+		<div class={`scanner ${active ? '' : 'scanner--hidden'}`}>
+			<div class="scanner__aspect-ratio-container">
+				<canvas bind:this={canvas} class="scanner__canvas" />
+				<!-- svelte-ignore a11y-media-has-caption -->
+				<video bind:this={video} on:canplay={handleCanPlay} class="scanner__video">
+					<!-- <track kind="captions" /> -->
+				</video>
+				<ScannerBorders />
+			</div>
+		</div>
+		<Text intent="h5" class="text-center ">
+			Escanea el codigo del paddle que deseas alquilar.
+		</Text>
+	{:else}
+		{() => {
+			if (!$cartStore.items.includes($selectedItemStore)) {
+				goto('/time');
+			} else {
+				const newNotification = {
+					open: true,
+					message: 'Ya tienes este producto en tu orden',
+					type: 'error'
+				};
+				$notificationStore = newNotification;
+			}
+		}}
+	{/if}
+</FlexBox>
 
 <style>
 	.scanner {
