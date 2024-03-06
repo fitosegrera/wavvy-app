@@ -29,3 +29,23 @@ body {
 .debug-blue {
 	border: 2px solid rgb(0, 0, 255);
 }
+
+/* width */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: theme('colors.surface.dark');
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: theme('colors.surface.light');
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}

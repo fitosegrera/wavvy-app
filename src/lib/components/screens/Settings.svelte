@@ -2,12 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { Button, FlexBox, Text } from '$lib/components';
 	import { auth } from '$lib/firebase';
-	import { closeModal, updateModal } from '$lib/stores/modal';
-	import type { ModalProps } from '$types/components';
+	import { isLoading } from '$lib/store/auth';
+	import { closeModal, updateModal } from '$lib/store/overlays/modal';
+	import type { ModalPropsInterface } from '$lib/types/components';
 	import { deleteUser, signOut, type User } from 'firebase/auth';
 
 	const handleLogout = () => {
-		const newModalProps: ModalProps = {
+		const newModalProps: ModalPropsInterface = {
 			open: true,
 			title: 'Cerrar sesión',
 			content: 'Seguro que deseas cerrar sesión?',
@@ -28,9 +29,11 @@
 										secondary: null
 									}
 								});
+								$isLoading = false;
 							})
 							.catch((error) => {
 								// An error happened.
+								$isLoading = false;
 							});
 					}
 				},
@@ -46,7 +49,7 @@
 	};
 
 	const handleDelete = () => {
-		const newModalProps: ModalProps = {
+		const newModalProps: ModalPropsInterface = {
 			open: true,
 			title: 'Eliminar cuenta',
 			content: 'Seguro que deseas eliminar tu cuenta?',
@@ -62,6 +65,7 @@
 							})
 							.catch((error) => {
 								// An error happened.
+								console.error(error);
 							});
 					}
 				},

@@ -1,20 +1,25 @@
 <script lang="ts">
-	import { BackButton, FlexBox, Text } from '$lib/components';
-	import { user } from '$lib/stores/auth';
-	import { notificationStore } from '$lib/stores/notification';
-	import { cartStore } from '$lib/stores/orders';
-	import { error, result, status, stream } from '$lib/stores/scanner';
-	import { createEventDispatcher, onMount } from 'svelte';
-
-	import jsQR from 'jsqr';
-
-	import ScannerBorders from './ScannerBorders.svelte';
-
 	import { goto } from '$app/navigation';
-	import { selectedItemStore } from '$lib/stores/orders';
-	import { stationStore } from '$lib/stores/station';
-	import { updateStationInventoryDb } from '$lib/utils/firestoreUtils';
-	import type { ItemInterface, ItemState } from '$types/station';
+	import { BackButton, FlexBox, Text } from '$lib/components';
+	import { user } from '$lib/store/auth';
+	import { isOnline } from '$lib/store/network';
+	import { selectedItemStore } from '$lib/store/orders/item';
+	import { stationStore } from '$lib/store/orders/station';
+	import { reservationDurationStore } from '$lib/store/orders/timers';
+	import { realtimeInventory } from '$lib/store/realtimeDb';
+	import { error, result, status, stream } from '$lib/store/widgets/scanner';
+	import type {
+		InventoryKey,
+		ItemInterface,
+		ItemState,
+		ReservationInterface
+	} from '$lib/types/orders';
+	import { updateStationInventoryDb } from '$lib/utils/firestore';
+	import { generateId } from '$lib/utils/generateId';
+	import { Timestamp } from 'firebase/firestore';
+	import jsQR from 'jsqr';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import ScannerBorders from './ScannerBorders.svelte';
 	import UserMedia from './useUserMedia.svelte';
 
 	$result = null;
@@ -27,6 +32,7 @@
 
 	let video: HTMLVideoElement | null = null;
 	let canvas: HTMLCanvasElement | null = null;
+	let overlay: HTMLDivElement | null = null;
 	let useUserMedia: any;
 	let mounted;
 
@@ -57,21 +63,76 @@
 		const qrCode = jsQR(imageData.data, width, height);
 
 		if (qrCode === null) {
-			// console.log('timeout');
+			// Set capturing timeout
 			setTimeout(startCapturing, 750);
 		} else {
-			$result = qrCode.data as string | null;
+			// If the QR code has data
 			if (qrCode.data) {
+				// Set result store
+				$result = qrCode.data as string | null;
+
+				// Get the item id from the QR code
 				const itemId = qrCode.data.split('%')[3] as string;
+				// Get the station id from the QR code
+				const stationId = qrCode.data.split('%')[1] as string;
+				// Set the item id as a key
+				const key = itemId as InventoryKey;
 
-				const key = ('p' + itemId) as keyof typeof $stationStore.inventory;
+				console.log('QR Code: ', qrCode.data);
 
-				$stationStore.inventory[key].state = 'reserved' as ItemState;
-				$stationStore.inventory[key].reservation.user = $user?.user?.uid! as string;
+				let selectedItem = {
+					id: 0,
+					name: '',
+					state: 'available',
+					reservation: null
+				} as ItemInterface;
 
-				$selectedItemStore = $stationStore.inventory[key] as ItemInterface;
+				$realtimeInventory.forEach((item, index) => {
+					// If the item has NO a reservation
+					if (
+						item.reservation === null &&
+						item.id.toString() === itemId &&
+						item.state === 'available'
+					) {
+						// generate a random id for the reservation
+						const rid = generateId(16);
 
-				updateStationInventoryDb($stationStore.id as string, $stationStore.inventory);
+						// declare a new reservation
+						const newReservation: ReservationInterface = {
+							rid: rid,
+							uid: $user?.uid as string,
+							duration: $reservationDurationStore,
+							startTime: Timestamp.now()
+						};
+
+						// set item state to reserved
+						$stationStore.inventory[key].state = 'reserved' as ItemState;
+
+						// set selectedItem
+						selectedItem.state = 'reserved';
+						selectedItem.name = item.name;
+						selectedItem.id = item.id;
+						selectedItem.rentTime = item.rentTime;
+						selectedItem.reservation = newReservation;
+
+						// set item reservation
+						$stationStore.inventory[key].reservation =
+							newReservation as ReservationInterface;
+
+						// update inventory DB
+						updateStationInventoryDb(stationId, $stationStore.inventory);
+					} else {
+						$selectedItemStore = $realtimeInventory[
+							parseInt(itemId) - 1
+						] as ItemInterface;
+					}
+
+					if (index === $realtimeInventory.length - 1) {
+						// go to time selection screen
+						console.log('Selected item: ', selectedItem);
+						goto('/time?selectedItem=' + JSON.stringify(selectedItem));
+					}
+				});
 
 				dispatch('successfulScan', qrCode.data);
 
@@ -118,30 +179,25 @@
 	{#if !$result}
 		<div class={`scanner ${active ? '' : 'scanner--hidden'}`}>
 			<div class="scanner__aspect-ratio-container">
-				<canvas bind:this={canvas} class="scanner__canvas" />
-				<!-- svelte-ignore a11y-media-has-caption -->
-				<video bind:this={video} on:canplay={handleCanPlay} class="scanner__video">
-					<!-- <track kind="captions" /> -->
-				</video>
+				{#if $isOnline}
+					<canvas bind:this={canvas} class="scanner__canvas" />
+					<!-- svelte-ignore a11y-media-has-caption -->
+					<video bind:this={video} on:canplay={handleCanPlay} class="scanner__video">
+						<!-- <track kind="captions" /> -->
+					</video>
+				{:else}
+					<!-- svelte-ignore a11y-media-has-caption -->
+					<video bind:this={video} class="scanner__video grayscale">
+						<!-- <track kind="captions" /> -->
+					</video>
+					<div bind:this={overlay} class="bg-white scanner_video" />
+				{/if}
 				<ScannerBorders />
 			</div>
 		</div>
 		<Text intent="h5" class="text-center ">
 			Escanea el codigo del paddle que deseas alquilar.
 		</Text>
-	{:else}
-		{() => {
-			if (!$cartStore.items.includes($selectedItemStore)) {
-				goto('/time');
-			} else {
-				const newNotification = {
-					open: true,
-					message: 'Ya tienes este producto en tu orden',
-					type: 'error'
-				};
-				$notificationStore = newNotification;
-			}
-		}}
 	{/if}
 </FlexBox>
 

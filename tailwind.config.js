@@ -20,11 +20,15 @@ export default {
 				surface: {
 					DEFAULT: '#023535',
 					dark: '#012020',
-					light: '#355d5d'
+					light: '#043a3b'
 				},
 				status: {
 					success: '#33c6a9',
-					error: '#de595a',
+					error: {
+						DEFAULT: '#ff4d4d',
+						dark: '#cc0000',
+						light: '#ff9999'
+					},
 					warning: '#f3d965',
 					info: '#0984e3',
 					disabled: '#6c6c6c'

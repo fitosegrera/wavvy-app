@@ -1,16 +1,17 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Button, EditButton, FlexBox, Grid, StatusBadge, Text } from '$lib/components';
-	import { orderHistoryStore } from '$lib/stores/orders';
+	import Button from '../core/Button/Button.svelte';
+	import FlexBox from '../core/Container/FlexBox.svelte';
+	import Text from '../core/Text/Text.svelte';
 </script>
 
-<FlexBox intent="flexColLeft" gap="medium" py="medium" class="">
+<FlexBox intent="flexColCenter" class="mt-[32px]">
 	<FlexBox
 		intent="flexColCenter"
 		py="medium"
 		px="medium"
 		gap="small"
-		class="w-full rounded-xl bg-primary-light">
+		class="w-full rounded-xl bg-primary-light/90">
 		<Text intent="h4" variant="inverted" class="font-bold text-primary-darker">
 			Mis Sesiones
 		</Text>
@@ -22,12 +23,12 @@
 			<Button
 				intent="unstyled"
 				class="p-0 font-medium leading-none text-white bg-secondary"
-				onClick={() => goto('/rent')}>
+				onClick={() => goto('/scan')}>
 				Alquilar paddle
 			</Button>
 		</FlexBox>
 	</FlexBox>
-	{#each $orderHistoryStore as order, i}
+	<!-- {#each $orderHistoryStore as order, i}
 		<Grid
 			intent="cols-4"
 			px="medium"
@@ -48,5 +49,5 @@
 				<EditButton onClick={() => {}} />
 			</FlexBox>
 		</Grid>
-	{/each}
+	{/each} -->
 </FlexBox>

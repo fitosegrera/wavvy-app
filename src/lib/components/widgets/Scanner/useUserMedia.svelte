@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { error, status, stream } from '$lib/stores/scanner';
+	import { error, status, stream } from '$lib/store/widgets/scanner';
 	import type {
 		UseUserMediaStatusType,
 		UseUserMediaStreamType,
 		UseUserMediaType
-	} from '$types/components';
+	} from '$lib/types/components';
 	import { onMount } from 'svelte';
 
 	let mounted;
@@ -13,8 +13,7 @@
 		mounted = true;
 
 		return () => {
-			console.log('stop Component destroyed');
-
+			// console.log('stop Component destroyed');
 			// stopMedia();
 		};
 	});
@@ -24,7 +23,7 @@
 	): candidate is MediaStream => candidate !== null && 'getTracks' in candidate;
 
 	function setStatus(params: UseUserMediaStatusType) {
-		console.log(`Setting status ${params}`);
+		// console.log(`Setting status ${params}`);
 
 		$status = params as UseUserMediaStatusType;
 	}
@@ -35,12 +34,12 @@
 		$status = 'stopped' as UseUserMediaStatusType;
 
 		function setError(params: string) {
-			console.log('Setting erro');
+			// console.log('Setting erro');
 			$error = params;
 		}
 
 		function setStream(params: UseUserMediaStreamType) {
-			console.log(`Setting stream`, { params });
+			// console.log(`Setting stream`, { params });
 			$stream = params as UseUserMediaStreamType;
 		}
 
@@ -69,7 +68,7 @@
 	};
 
 	function stopMedia(): void {
-		console.log('stopping media stream');
+		// console.log('stopping media stream');
 
 		if (isMediaStream($stream)) {
 			$stream.getTracks().forEach((track) => {
@@ -77,7 +76,7 @@
 				if ($stream) $stream.removeTrack(track);
 			});
 
-			console.log({ streams: $stream });
+			// console.log({ streams: $stream });
 
 			setStatus('stopped' as UseUserMediaStatusType);
 		}

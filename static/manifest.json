@@ -1,6 +1,6 @@
 {
-	"name": "Wavvy App",
-	"short_name": "Wavvy",
+	"name": "wavvy-app",
+	"short_name": "wavvy",
 	"start_url": "/",
 	"display": "standalone",
 	"theme_color": "#303743",

@@ -1,4 +1,3 @@
-<!-- src/routes/+layout.svelte -->
 <script lang="ts">
 	import { MobileLayout } from '$lib/components';
 </script>
