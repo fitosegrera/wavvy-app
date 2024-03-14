@@ -92,11 +92,6 @@
 		background-color: #39b300;
 	}
 
-	.results__scan-icon {
-		width: 1.5rem;
-		margin-right: 10px;
-	}
-
 	.results__link,
 	.results__link:visited {
 		transition: color 200ms;

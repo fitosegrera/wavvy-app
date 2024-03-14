@@ -6,7 +6,8 @@ const selectedItem: ItemInterface = {
 	name: null,
 	rentTime: 1,
 	state: 'available',
-	reservation: null
+	reservation: null,
+	currentOrder: null
 };
 
 const selectedItemStore = writable(selectedItem);

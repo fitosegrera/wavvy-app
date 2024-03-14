@@ -13,16 +13,13 @@
 
 <FlexBox
 	intent="flexColLeft"
-	class="absolute flex items-center justify-center z-[9999] top-[84px] left-[50%] rounded-md -translate-x-[50%] min-w-[100%]"
->
+	class="absolute flex items-center justify-center z-[9999] top-[84px] left-[50%] rounded-md -translate-x-[50%] min-w-[100%]">
 	<div
 		class="w-full h-full bg-surface px-[24px] py-[12px] rounded-md max-w-[75%] shadow-xl pointer-events-auto"
 		transition:fly={{
 			x: 400,
 			duration: 200
-		}}
-	>
-		<Text intent="p1" class="font-bold">{$notificationStore.title}</Text>
+		}}>
 		<Text intent="p2" class="">{$notificationStore.content}</Text>
 	</div>
 </FlexBox>
