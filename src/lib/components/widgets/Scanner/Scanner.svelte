@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { BackButton, FlexBox, Text } from '$lib/components';
+	import { BackButton, FlexBox, Image, Text } from '$lib/components';
 	import { user } from '$lib/store/auth';
 	import { isOnline } from '$lib/store/network';
 	import { selectedItemStore } from '$lib/store/orders/item';
@@ -171,11 +171,15 @@
 
 <UserMedia bind:useUserMedia />
 
-<FlexBox intent="flexColTop" gap="large" class="w-full h-full">
-	<FlexBox intent="flexRowLeft" gap="small" class="w-full">
-		<BackButton href="/" />
-		<Text>Volver</Text>
+<div class="fixed top-0 left-0 w-full h-full bg-black z-[300]" />
+<header
+	class="invert brightness-100 saturate-0 fixed z-[300] top-0 left-0 items-center w-full h-[80px] mobile-width bg-transparent">
+	<FlexBox intent="flexRowCenter" gap="xsmall" class="w-full h-full ">
+		<Image href="/images/wavvy-logo-dark.png" width={101} height={33} />
 	</FlexBox>
+</header>
+<FlexBox intent="flexColTop" gap="large" class="w-full h-full mt-[80px]">
+	<BackButton inverted onClick={() => goto('/')} />
 	{#if !$result}
 		<div class={`scanner ${active ? '' : 'scanner--hidden'}`}>
 			<div class="scanner__aspect-ratio-container">
@@ -195,10 +199,10 @@
 				<ScannerBorders />
 			</div>
 		</div>
-		<Text intent="h5" class="text-center ">
-			Escanea el codigo del paddle que deseas alquilar.
-		</Text>
 	{/if}
+	<Text intent="h5" class="text-center text-surface z-[300]">
+		Escanea el codigo del paddle que deseas alquilar.
+	</Text>
 </FlexBox>
 
 <style>
@@ -228,6 +232,7 @@
 
 		width: 100%;
 		height: 100%;
+		z-index: 400;
 
 		border-radius: inherit;
 

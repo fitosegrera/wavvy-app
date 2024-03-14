@@ -33,39 +33,42 @@
 	onMount(() => {
 		socket.subscribe((currentMessage) => {
 			response = currentMessage;
-			console.log('response', response);
-			const resObject = JSON.parse(response);
-			if (resObject.action === 'unlocked') {
-				clearInterval(socketTimer);
-				loading = false;
-				dataToSend.action = 'ride';
-				socket.sendMessage(JSON.stringify(dataToSend));
-				goto('/ride');
+			console.log('response', typeof response);
+			if (response.length > 0) {
+				const resObject = JSON.parse(response);
+				if (resObject.action === 'unlocked') {
+					clearInterval(socketTimer);
+					loading = false;
+					dataToSend.action = 'ride';
+					socket.sendMessage(JSON.stringify(dataToSend));
+					goto('/ride');
+				}
 			}
 		});
 	});
 </script>
 
 <FlexBox intent="flexColTop" gap="medium" class="w-full h-full">
-	<FlexBox intent="flexRowLeft" gap="small" class="w-full">
-		<BackButton />
-		<Text>Volver</Text>
+	<BackButton onClick={() => history.back()} />
+	<FlexBox intent="flexColTop" gap="medium" py="large" class="w-full h-full">
+		<Text intent="h5">Desbloquea tu paddle</Text>
+		<Text intent="p1" variant="dim" class="text-center">
+			Haz clic en desbloquar para iniciar a usar tu paddle.
+		</Text>
+		<Button
+			intent="primary"
+			onClick={() => {
+				loading = true;
+				dataToSend = { from: 'app', to: 'server', id: 'p' + item?.id, action: 'unlock' };
+				socketTimer = setInterval(() => {
+					socket.sendMessage(JSON.stringify(dataToSend));
+				}, 3000);
+			}}>
+			{#if loading}
+				<Icon icon="svg-spinners:180-ring" />
+			{:else}
+				Desbloquear
+			{/if}
+		</Button>
 	</FlexBox>
-	<Text intent="h5">Desbloquea tu paddle</Text>
-	<Text intent="p1" variant="dim">Haz clic en desbloquar para iniciar a usar tu paddle.</Text>
-	<Button
-		intent="primary"
-		onClick={() => {
-			loading = true;
-			dataToSend = { from: 'app', to: 'server', id: 'p' + item?.id, action: 'unlock' };
-			socketTimer = setInterval(() => {
-				socket.sendMessage(JSON.stringify(dataToSend));
-			}, 3000);
-		}}>
-		{#if loading}
-			<Icon icon="svg-spinners:180-ring" />
-		{:else}
-			Desbloquear
-		{/if}
-	</Button>
 </FlexBox>

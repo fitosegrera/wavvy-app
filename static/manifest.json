@@ -3,8 +3,8 @@
 	"short_name": "wavvy",
 	"start_url": "/",
 	"display": "standalone",
-	"theme_color": "#303743",
-	"background_color": "#19212e",
+	"theme_color": "#0FC2C0",
+	"background_color": "#0FC2C0",
 	"icons": [
 		{
 			"src": "/images/icons/icon-192-192.png",

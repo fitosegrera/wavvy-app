@@ -88,7 +88,7 @@
 			fullWidth
 			size="large"
 			class="flex items-center justify-center gap-[8px] max-w-fit ">
-			<Text class="text-on-surface-light">Mi perfil</Text>
+			<Text class="text-on-surface">Mi perfil</Text>
 		</Button>
 	</FlexBox>
 	<FlexBox py="small" class="w-full border-b-[1.5px] border-on-surface-light/60">

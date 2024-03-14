@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {
 		FlexBox,
+		Header,
 		LegalScreenOverlay,
 		ModalBasic,
 		NotificationBasic,
@@ -20,8 +21,11 @@
 	class={classNames(
 		'mobile-width',
 		'h-screen mx-auto p-[24px]',
-		'bg-gradient-to-b from-surface to-surface-dark/80',
-		'overflow-y-auto'
+		// 'bg-gradient-to-b from-surface to-surface-dark/80',
+		'bg-surface',
+		'overflow-y-auto',
+		'overflow-x-none',
+		'relative'
 	)}>
 	{#if !$isOnline}
 		<OfflineScreenOverlay />
@@ -38,7 +42,14 @@
 	{#if $networkNotificationStore?.open}
 		<NotificationNetwork />
 	{/if}
-	<main class="w-full h-full">
+
+	<FlexBox
+		intent="flexColTop"
+		class="absolute top-0 left-0 z-[200] w-full h-full pointer-events-none">
+		<Header />
+	</FlexBox>
+
+	<main class="w-full h-full mt-[56px]">
 		<slot />
 	</main>
 </FlexBox>

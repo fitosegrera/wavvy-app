@@ -7,17 +7,17 @@
 
 <style>
 	:root {
-		--border-thickness: 3px;
-		--border-radius: 40%;
+		--border-thickness: 6px;
+		--border-radius: 80%;
 		--border-offset: 5%;
-		--border-color: #cbf3f0;
+		--border-color: #ffffff;
 	}
 
 	.scanner-border {
 		position: absolute;
-
-		width: 20%;
-		height: 20%;
+		z-index: 400;
+		width: 15%;
+		height: 15%;
 	}
 
 	.scanner-border--top-left {

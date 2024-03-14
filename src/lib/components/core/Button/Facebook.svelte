@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { Button } from '$lib/components';
+	import { Button, Text } from '$lib/components';
 	import { auth } from '$lib/firebase';
 	import { isLoading } from '$lib/store/auth';
+	import { legalScreenStore } from '$lib/store/overlays/legal';
 	import { classNames } from '$lib/utils/classNames';
+	import Icon from '@iconify/svelte';
 	import { FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
 
 	const provider = new FacebookAuthProvider();
@@ -35,13 +37,31 @@
 				// ...
 			});
 	};
+
+	const handleLegalScreen = () => {
+		$legalScreenStore = {
+			open: true,
+			onCancel: () => {
+				$legalScreenStore.open = false;
+			},
+			onConfirm: () => {
+				$legalScreenStore.open = false;
+				$isLoading = true;
+				handleFacebookLogIn();
+			}
+		};
+	};
 </script>
 
 <Button
 	intent="unstyled"
 	fullWidth
 	{disabled}
-	class={classNames(disabled ? 'bg-secondary/50 text-white/50' : 'bg-secondary text-white')}
-	onClick={handleFacebookLogIn}>
-	Inicia con Facebook
+	class={classNames(
+		'border-[2px] flex items-center justify-center relative',
+		disabled ? 'text-gray-100/50 border-gray-100/50' : ' text-on-surface border-[#CDDADA]'
+	)}
+	onClick={handleLegalScreen}>
+	<Icon icon="logos:facebook" class="absolute left-[12px]" />
+	<Text class="font-medium">Inicia con Facebook</Text>
 </Button>

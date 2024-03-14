@@ -2,37 +2,40 @@
 	import { cva, type VariantProps } from 'class-variance-authority';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 
-	const button = cva('rounded-md', {
+	const button = cva('rounded-xl', {
 		variants: {
 			intent: {
 				unstyled: [''],
 				primary: [
-					'text-on-primary',
-					'bg-primary',
-					'hover:bg-primary-dark',
+					'text-on-secondary-light',
+					'bg-secondary',
 					'border-none',
 					'transition-all',
 					'duration-300',
-					'disabled:bg-status-disabled/70'
+					'disabled:bg-status-disabled/70',
+					'font-medium'
 				],
 				secondary: [
-					'text-primary',
+					'text-on-surface',
 					'bg-transparent',
-					'border',
-					'border-primary',
-					'hover:border-primary-dark',
-					'hover:text-primary-dark',
+					'border-2',
+					'border-status-disabled',
 					'transition-all',
 					'duration-300',
 					'disabled:bg-status-disabled/70'
 				],
-				text: ['text-primary', 'bg-transparent', 'disabled:text-status-disabled/70'],
+				text: [
+					'text-on-surface/70',
+					'font-medium',
+					'bg-transparent',
+					'disabled:text-status-disabled/70'
+				],
 				icon: ['text-primary', 'bg-transparent', 'border-none']
 			},
 			size: {
 				small: $$props.intent !== 'text' && ['text-[14px]', 'px-[12px]', 'py-[8px]'],
 				medium: $$props.intent !== 'text' && ['text-[16px]', 'px-[24px]', 'py-[12px]'],
-				large: $$props.intent !== 'text' && ['text-[20px]', 'px-[32px]', 'py-[12px]']
+				large: $$props.intent !== 'text' && ['text-[16px]', 'px-[32px]', 'py-[12px]']
 			},
 			fullWidth: {
 				true: 'w-full',

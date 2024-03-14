@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { Button } from '$lib/components';
+	import { Button, Text } from '$lib/components';
 	import { auth } from '$lib/firebase';
 	import { isLoading } from '$lib/store/auth';
 	import { legalScreenStore } from '$lib/store/overlays/legal';
 	import { classNames } from '$lib/utils/classNames';
+	import Icon from '@iconify/svelte';
 	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 	const provider = new GoogleAuthProvider();
@@ -54,9 +55,10 @@
 	fullWidth
 	{disabled}
 	class={classNames(
-		'border-[1.5px]',
-		disabled ? 'text-gray-100/50 border-gray-100/50' : ' text-gray-100 border-gray-100'
+		'border-[2px] flex items-center justify-center relative',
+		disabled ? 'text-gray-100/50 border-gray-100/50' : ' text-on-surface border-status-disabled'
 	)}
 	onClick={handleLegalScreen}>
-	Inicia con Google
+	<Icon icon="flat-color-icons:google" class="absolute left-[12px]" />
+	<Text class="font-medium">Inicia con Google</Text>
 </Button>

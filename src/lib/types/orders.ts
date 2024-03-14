@@ -18,6 +18,14 @@ export interface CurrentOrderInterface {
 	startTime: Timestamp | null;
 }
 
+export interface OrderInterface {
+	uid: string | null;
+	oid: string | null;
+	duration: number | null;
+	startTime: Timestamp | null;
+	total: number | null;
+}
+
 export type InventoryKey = '1' | '2' | '3' | '4';
 
 export interface InventoryInterface {

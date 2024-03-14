@@ -6,7 +6,7 @@
 	import { realtimeInventory, stationId } from '$lib/store/realtimeDb';
 	import type { ItemInterface } from '$lib/types/orders';
 	import type { TimersInterface } from '$lib/types/timers';
-	import { getReservationDurationDb } from '$lib/utils/firestore';
+	import { getReservationDurationDb, resetStationInventoryDb } from '$lib/utils/firestore';
 	import { onMount } from 'svelte';
 	import '../app.css';
 

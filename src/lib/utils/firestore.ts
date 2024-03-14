@@ -1,12 +1,33 @@
-import type { InventoryInterface, StationInterface } from '$lib/types/orders';
+import type { OrderInterface, InventoryInterface, StationInterface } from '$lib/types/orders';
 import type { TimersInterface } from '$lib/types/timers';
-import { doc, getDoc, onSnapshot, setDoc, type DocumentData } from 'firebase/firestore';
+import {
+	doc,
+	getDoc,
+	onSnapshot,
+	setDoc,
+	type DocumentData,
+	addDoc,
+	collection
+} from 'firebase/firestore';
 import { db } from '../firebase';
 
 // Update the station inventory in the database
 export const updateStationInventoryDb = (stationId: string, inventory: InventoryInterface) => {
 	const docRef = doc(db, 'station', stationId as string);
 	setDoc(docRef, { inventory: inventory }, { merge: true });
+};
+
+// Update orders in the database
+export const updateOrdersDb = async (order: OrderInterface) => {
+	const ordersCollection = collection(db, 'orders');
+	await addDoc(ordersCollection, {
+		uid: order.uid,
+		oid: order.oid,
+		duration: order.duration,
+		startTime: order.startTime,
+		total: order.total
+	});
+	console.log('Order added');
 };
 
 // Realtime Station inventory database updates

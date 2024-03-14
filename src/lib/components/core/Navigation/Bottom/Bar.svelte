@@ -6,7 +6,7 @@
 
 <FlexBox
 	intent="flexRowCenter"
-	class="fixed z-[999] left-[50%] -translate-x-[50%] bottom-0 shadow-top bg-surface rounded-t-xl mobile-width">
+	class="fixed z-[100] left-[50%] -translate-x-[50%] bottom-0 shadow-top bg-surface rounded-t-xl mobile-width">
 	<Grid intent="cols-4" class="items-center w-full">
 		{#each $items as screen, i}
 			<Item

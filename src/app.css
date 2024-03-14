@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
 
 @tailwind base;
@@ -12,10 +13,9 @@
 
 body {
 	background-color: theme('colors.surface.DEFAULT');
-}
-
-.logo-font {
-	font-family: 'Lilita One', sans-serif;
+	font-family: 'Karla', sans-serif;
+	font-optical-sizing: auto;
+	font-style: normal;
 }
 
 .debug-red {
@@ -37,15 +37,15 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-	background: theme('colors.surface.dark');
+	background: theme('colors.transparent');
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	background: theme('colors.surface.light');
+	background: theme('colors.surface.dark');
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-	background: #555;
+	background: theme('colors.primary.DEFAULT');
 }

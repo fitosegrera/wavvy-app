@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 </script>
 
-<div class="wrapper" transition:fade>
+<div class="wrapper z-[999]" transition:fade>
 	<h1>
 		<div class="loader" />
 	</h1>
@@ -20,7 +20,8 @@
 		top: 0;
 		bottom: 0;
 		color: theme('colors.primary.DEFAULT');
-		background: transparent;
+		background: theme('colors.surface.DEFAULT');
+		overflow: hidden;
 	}
 
 	/* spinner from https://projects.lukehaas.me/css-loaders/ */

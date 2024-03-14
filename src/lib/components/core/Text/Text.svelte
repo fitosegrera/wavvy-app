@@ -7,7 +7,7 @@
 				h1: ['text-[64px]', 'font-bold'],
 				h2: ['text-[48px]', 'font-medium'],
 				h3: ['text-[32px]', 'font-medium'],
-				h4: ['text-[24px]', 'font-medium'],
+				h4: ['text-[24px]', 'font-bold'],
 				h5: ['text-[20px]', 'font-medium'],
 				h6: ['text-[18px]', 'font-medium'],
 				p1: ['text-[16px]', '', '', ''],
@@ -16,8 +16,8 @@
 			variant: {
 				normal: ['text-on-surface'],
 				accent: ['text-primary'],
-				dim: ['text-on-surface-dark'],
-				inverted: ['text-on-primary'],
+				dim: ['text-on-surface/80'],
+				inverted: ['text-surface'],
 				error: ['text-status-error'],
 				success: ['text-status-success'],
 				warning: ['text-status-warning'],
@@ -45,7 +45,7 @@
 	export let variant: $$Props['variant'] = 'normal';
 </script>
 
-<p {...$$props} class={text({ intent, variant, class: $$props.class })}>
+<p class={text({ intent, variant, class: $$props.class })}>
 	<slot />
 </p>
 

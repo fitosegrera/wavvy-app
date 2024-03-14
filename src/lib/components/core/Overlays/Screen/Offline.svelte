@@ -14,9 +14,9 @@
 <FlexBox
 	intent="flexColCenter"
 	px="large"
-	class="fixed top-0 left-0 z-[200] flex items-center justify-center w-full h-full bg-black/60 backdrop-blur-sm">
-	<Text intent="h5" class="text-center">{title}</Text>
-	<Text class="text-center">
+	class="fixed top-0 left-0 z-[600] flex items-center justify-center w-full h-full bg-black/70 backdrop-blur-sm">
+	<Text variant="inverted" intent="h5" class="text-center">{title}</Text>
+	<Text variant="inverted" class="text-center">
 		{message}
 	</Text>
 </FlexBox>

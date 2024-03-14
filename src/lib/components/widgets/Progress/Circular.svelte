@@ -50,7 +50,7 @@
 		stroke-width: var(--progress-trackwidth, 9px);
 	}
 	path:last-child {
-		stroke: var(--progress-color, theme('colors.secondary.light'));
+		stroke: var(--progress-color, theme('colors.primary.DEFAULT'));
 		stroke-width: var(--progress-width, 10px);
 	}
 	div {

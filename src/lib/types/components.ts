@@ -49,3 +49,10 @@ export interface LegalScreenInterface {
 	onCancel: () => void;
 	onConfirm: () => void;
 }
+
+// INSTRUCTIONS STEP
+export interface InformationStepInterface {
+	title: string;
+	description: string;
+	image: string;
+}

@@ -11,10 +11,10 @@
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
 
-	$: key = '' as InventoryKey;
-	$: reservedBySelf = false;
-	$: timeLeft = 0;
-	$: selectedItem = {} as ItemInterface;
+	let key = '' as InventoryKey;
+	let reservedBySelf = false;
+	let timeLeft = 0;
+	let selectedItem = {} as ItemInterface;
 	let timeLeftInterval: NodeJS.Timeout | null = null;
 	let stationId: string;
 
@@ -53,8 +53,7 @@
 <FlexBox intent="flexColTop" py="medium" gap="medium" class="w-full h-full">
 	<FlexBox intent="flexRowLeft" gap="small" class="w-full">
 		<BackButton
-			href="/scan"
-			onBack={() => {
+			onClick={() => {
 				// reset the scanner result
 				$result = null;
 
@@ -67,10 +66,10 @@
 				$stationStore.inventory[key].state = 'available';
 				$stationStore.inventory[key].reservation = null;
 
-				console.log('XXXXX', stationId);
 				updateStationInventoryDb(stationId, $stationStore.inventory);
+
+				history.back();
 			}} />
-		<Text>Volver</Text>
 	</FlexBox>
 
 	<FlexBox intent="flexColCenter">

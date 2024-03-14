@@ -6,20 +6,20 @@ export default {
 		extend: {
 			colors: {
 				primary: {
-					DEFAULT: '#fc8c03',
-					dark: '#ca7002',
-					darker: '#7e4602',
-					light: '#fdba68'
-				},
-				secondary: {
 					DEFAULT: '#0FC2C0',
 					dark: '#0b8886',
 					darker: '#064e4d',
-					light: '#6fdad9'
+					light: '#D8FFDB'
+				},
+				secondary: {
+					DEFAULT: '#C65026',
+					dark: '#8b381b',
+					darker: '#3b180b',
+					light: '#d78567'
 				},
 				surface: {
-					DEFAULT: '#023535',
-					dark: '#012020',
+					DEFAULT: '#ffffff',
+					dark: '#dedede',
 					light: '#043a3b'
 				},
 				status: {
@@ -31,7 +31,7 @@ export default {
 					},
 					warning: '#f3d965',
 					info: '#0984e3',
-					disabled: '#6c6c6c'
+					disabled: '#CDDADA'
 				},
 				on: {
 					primary: {
@@ -39,8 +39,13 @@ export default {
 						dark: '#151b25',
 						light: '#19212e'
 					},
+					secondary: {
+						DEFAULT: '#dedede',
+						dark: '#ababab',
+						light: '#ffffff'
+					},
 					surface: {
-						DEFAULT: '#dddddd',
+						DEFAULT: '#023535',
 						dark: '#bbbbbb',
 						light: '#ffffff'
 					},
@@ -53,6 +58,8 @@ export default {
 					}
 				}
 			},
+			transparent: 'transparent',
+
 			boxShadow: {
 				top: '0px -4px 16px 2px rgba(0, 0, 0, 0.1)'
 			}
