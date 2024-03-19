@@ -9,6 +9,7 @@
 	import { getReservationDurationDb, resetStationInventoryDb } from '$lib/utils/firestore';
 	import { onMount } from 'svelte';
 	import '../app.css';
+	import { registerServiceWorker } from '$lib/utils/serviceWorker';
 
 	let data: ItemInterface[];
 
@@ -17,6 +18,8 @@
 
 	onMount(() => {
 		// resetStationInventoryDb('carey-beach');
+
+		registerServiceWorker();
 
 		// Subscribe to firebase auth and listen for auth updates
 		const unsubscribeUser = user.subscribe((value) => {

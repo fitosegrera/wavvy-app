@@ -45,3 +45,4 @@ export { default as Scanner } from './widgets/Scanner/Scanner.svelte';
 export { default as Youtube } from './widgets/Youtube/Youtube.svelte';
 export { default as ReviewOrderScreen } from './screens/ReviewOrder.svelte';
 export { default as RideScreen } from './screens/Ride.svelte';
+export { default as NotificationsPermissionRequest } from './core/Overlays/Screen/NotificationsPermissionRequest.svelte';

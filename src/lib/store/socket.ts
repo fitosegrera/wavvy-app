@@ -32,7 +32,7 @@ const connect = () => {
 	}
 };
 
-connect();
+// connect();
 
 const sendMessage = (message: string) => {
 	if (socket.readyState <= 1) {

@@ -6,6 +6,7 @@
 		ModalBasic,
 		NotificationBasic,
 		NotificationNetwork,
+		NotificationsPermissionRequest,
 		OfflineScreenOverlay
 	} from '$lib/components';
 	import { isOnline } from '$lib/store/network';
@@ -14,6 +15,7 @@
 	import { networkNotificationStore } from '$lib/store/overlays/networkNotification';
 	import { notificationStore } from '$lib/store/overlays/notification';
 	import { classNames } from '$lib/utils/classNames';
+	import { pushNotificationsPermission } from '$lib/store/permissions';
 </script>
 
 <FlexBox
@@ -29,6 +31,9 @@
 	)}>
 	{#if !$isOnline}
 		<OfflineScreenOverlay />
+	{/if}
+	{#if $pushNotificationsPermission !== 'granted'}
+		<NotificationsPermissionRequest status={$pushNotificationsPermission} />
 	{/if}
 	{#if $modalStore?.open}
 		<ModalBasic />

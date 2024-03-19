@@ -8,6 +8,17 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	interface Window {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		registration: any;
+	}
+
+	interface ServiceWorkerGlobalScope {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		registration: any;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		addEventListener: (type: string, listener: (event: any) => void) => void;
+	}
 }
 
 export {};
