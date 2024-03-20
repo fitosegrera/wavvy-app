@@ -46,6 +46,7 @@ export interface UseUserMediaType {
 // LEGAL SCREEN
 export interface LegalScreenInterface {
 	open: boolean;
+	withActions: boolean;
 	onCancel: () => void;
 	onConfirm: () => void;
 }

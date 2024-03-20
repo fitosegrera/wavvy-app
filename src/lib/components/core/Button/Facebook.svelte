@@ -41,6 +41,7 @@
 	const handleLegalScreen = () => {
 		$legalScreenStore = {
 			open: true,
+			withActions: true,
 			onCancel: () => {
 				$legalScreenStore.open = false;
 			},

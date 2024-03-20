@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, FlexBox, Text } from '$lib/components';
+	import { Button, CollapsibleSection, FlexBox, Text } from '$lib/components';
 	import { legalScreenStore } from '$lib/store/overlays/legal';
 	import { getLegalDataDb } from '$lib/utils/firestore';
 	import { onMount } from 'svelte';
@@ -7,16 +7,9 @@
 	let termsAndConditions: object | null = null;
 	let privacyPolicy: object | null = null;
 
-	let withActions: string | null = '';
+	let withActions: boolean | null = $legalScreenStore.withActions;
 
 	onMount(() => {
-		const urlParams = new URLSearchParams(window.location.search);
-		const isWithActions = urlParams.has('withActions');
-
-		if (isWithActions) {
-			withActions = urlParams.get('withActions');
-		}
-
 		getLegalDataDb((data) => {
 			if ('termsAndConditions' in data) {
 				termsAndConditions = JSON.parse(data.termsAndConditions);
@@ -33,6 +26,16 @@
 		py="2xlarge"
 		gap="medium"
 		class="fixed mobile-width mx-auto top-0 left-[50%] -translate-x-[50%] z-[200] overflow-y-scroll overflow-x-none w-full h-full bg-surface">
+		<Text intent="h4" variant="normal" class="mt-[32px]">Terminos y Condiciones</Text>
+		<Text>
+			Nor again is there anyone who loves or pursues or desires to obtain pain of itself,
+			because it is pain, but occasionally circumstances occur in which toil and pain can
+			procure him some great pleasure
+		</Text>
+		<Text>
+			Qui dolorem ipsum, quia dolor sit amet consectetur adipisci velit, sed quia non numquam
+			eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem
+		</Text>
 		<!-- <CollapsibleSection title="Terminos & Condiciones"> -->
 		<!-- <Text intent="h4" variant="accent">{termsAndConditions.titulo}</Text>
 		<Text intent="p2" variant="dim">{termsAndConditions.introduccion}</Text>

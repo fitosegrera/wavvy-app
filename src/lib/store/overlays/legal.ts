@@ -3,6 +3,7 @@ import { writable } from 'svelte/store';
 
 const legalScreen: LegalScreenInterface = {
 	open: false,
+	withActions: false,
 	onCancel: () => {},
 	onConfirm: () => {}
 };
