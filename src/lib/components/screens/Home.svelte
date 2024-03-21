@@ -64,11 +64,13 @@
 	{/if}
 
 	<img
-		class="absolute top-[-48px] left-0 w-full pointer-events-none"
+		class="absolute top-[-80px] left-0 w-full pointer-events-none"
 		src="/images/primary-bg-shape.svg"
 		alt="" />
-	<FlexBox intent="flexColTop" class={classNames($$props.class, 'max-w-fit max-h-fit z-10')}>
-		<Image size="contain" href="/images/paddle.png" width={420} height={440} />
+	<FlexBox
+		intent="flexColTop"
+		class={classNames($$props.class, 'max-w-fit max-h-fit z-10 mx-auto')}>
+		<Image size="cover" href="/images/paddle.png" width={320} height={340} styles="" />
 	</FlexBox>
 	{#if $user?.email !== undefined}
 		<Text intent="h4" class="text-on-surface">Hola, {$nicknames.displayName}</Text>

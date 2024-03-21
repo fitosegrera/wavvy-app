@@ -12,10 +12,8 @@
 		px="medium"
 		gap="small"
 		class="w-full rounded-xl bg-primary-light/90">
-		<Text intent="h4" variant="inverted" class="font-bold text-primary-darker">
-			Mis Sesiones
-		</Text>
-		<Text intent="p1" variant="inverted" class="text-center text-primary-darker">
+		<Text intent="h4" variant="normal" class="font-bold text-primary-darker">Mis Sesiones</Text>
+		<Text intent="p1" variant="normal" class="text-center text-primary-darker">
 			Haz click en <span class="font-medium">Alquilar paddle</span>
 			para crear una nueva sesion y disfrutar de tu paddle board!
 		</Text>

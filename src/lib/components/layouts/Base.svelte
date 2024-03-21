@@ -22,11 +22,10 @@
 	intent="flexColCenter"
 	class={classNames(
 		'mobile-width',
-		'h-screen mx-auto p-[24px]',
-		// 'bg-gradient-to-b from-surface to-surface-dark/80',
+		'min-h-screen mx-auto p-[24px]',
 		'bg-surface',
 		'overflow-y-auto',
-		'overflow-x-none',
+		'overflow-x-hidden',
 		'relative'
 	)}>
 	{#if !$isOnline}
@@ -48,13 +47,11 @@
 		<NotificationNetwork />
 	{/if}
 
-	<FlexBox
-		intent="flexColTop"
-		class="absolute top-0 left-0 z-[200] w-full h-full pointer-events-none">
+	<FlexBox intent="flexRowCenter" py="xsmall" class="z-[200] w-full pointer-events-none">
 		<Header />
 	</FlexBox>
 
-	<main class="w-full h-full mt-[56px]">
+	<main class="w-full h-full">
 		<slot />
 	</main>
 </FlexBox>
